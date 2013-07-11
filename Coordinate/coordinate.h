@@ -25,6 +25,10 @@ public:
 //	return *this;
 //}
 
+/* A template based array classs is derived from std::array<T, N> class.
+DESIGN GOAL:
+An easy to use 2-member array class with overloaded operators such as pt3 = pt1 + pt2.
+*/
 template <typename T>
 class Cartesian2D : public std::array<T, 2>
 {
@@ -34,15 +38,18 @@ public:
 	Cartesian2D<T> &operator=(const Cartesian2D<T> &src);
 
 	Cartesian2D(T x, T y);
+	//Cartesian2D(const std::array<T, 2> &src);
 	
 	T &x, &y;
 };
+
 
 template <typename T>
 Cartesian2D<T>::Cartesian2D(void) : std::array<T, 2>(), x(at(0)), y(at(1)) {}
 
 template <typename T>
-Cartesian2D<T>::Cartesian2D(const Cartesian2D &src) : std::array<T, 2>(src), x(at(0)), y(at(1)) {}
+Cartesian2D<T>::Cartesian2D(const Cartesian2D &src) :
+	std::array<T, 2>(src), x(at(0)), y(at(1)) {}
 
 template <typename T>
 Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<T> &src)
@@ -52,10 +59,36 @@ Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<T> &src)
 }
 
 template <typename T>
-Cartesian2D<T>::Cartesian2D(T x_val, T y_val) : std::array<T, 2>(), x(at(0)), y(at(1))
+Cartesian2D<T>::Cartesian2D(T x, T y) : std::array<T, 2>(), x(at(0)), y(at(1))
 {
-	this->x = x_val;
-	this->y = y_val;
+	this->x = x;
+	this->y = y;
 }
 
+// Unusual constructor to allow Cartesian2D = std::array format.
+//template <typename T>
+//Cartesian2D<T>::Cartesian2D(const std::array<T, 2> &src) :
+//	std::array<T, 2>(src), x(at(0)), y(at(1)) {}
+
+template <typename T, typename U, ::size_t N>
+void Add(const std::array<T, N> &a, const std::array<T, N> &b, std::array<U, N> &c)
+{
+	auto it_a = a.cbegin();
+	auto it_b = b.cbegin();
+	auto it_c_end = c.end();
+	for (auto it_c = c.begin(); it_c != it_c_end; ++it_a, ++it_b, ++it_c)
+		*it_c = *it_a + *it_b;
+}
+
+//template <typename T, ::size_t N>
+//std::array<T, N> operator+(const std::array<T, N> &a, const std::array<T, N> &b)
+//{
+//	std::array<T, N> c;
+//	auto it_a = a.cbegin();
+//	auto it_b = b.cbegin();
+//	auto it_c_end = c.end();
+//	for (auto it_c = c.begin(); it_c != it_c_end; ++it_a, ++it_b, ++it_c)
+//		*it_c = *it_a + *it_b;
+//	return c;
+//}
 #endif

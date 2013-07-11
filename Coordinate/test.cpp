@@ -22,8 +22,12 @@ void test(void)
 	x = c2.x;
 	y = c2.y;
 	c2.y++;
+	c2.y = 0;
 	c1 = c2;
 	Cartesian2D<T> c3(c1);
+
+	Add(c1, c2, c3);
+	//c1 = c2 + c3;
 }
 
 int main(void)
