@@ -1,1 +1,0 @@
-This solution includes test and example projects using std::vector<T> class with Visual Studio 2012.
