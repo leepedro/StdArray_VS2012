@@ -34,8 +34,12 @@ class Cartesian2D : public std::array<T, 2>
 {
 public:
 	Cartesian2D(void);
-	Cartesian2D(const Cartesian2D<T> &src);
-	Cartesian2D<T> &operator=(const Cartesian2D<T> &src);
+
+	template <typename U>
+	Cartesian2D(const Cartesian2D<U> &src);
+
+	template <typename U>
+	Cartesian2D<T> &operator=(const Cartesian2D<U> &src);
 
 	Cartesian2D(T x, T y);
 	//Cartesian2D(const std::array<T, 2> &src);
@@ -47,12 +51,12 @@ public:
 template <typename T>
 Cartesian2D<T>::Cartesian2D(void) : x(at(0)), y(at(1)) {}
 
-template <typename T>
-Cartesian2D<T>::Cartesian2D(const Cartesian2D &src) :
+template <typename T> template <typename U>
+Cartesian2D<T>::Cartesian2D(const Cartesian2D<U> &src) :
 	std::array<T, 2>(src), x(at(0)), y(at(1)) {}
 
-template <typename T>
-Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<T> &src)
+template <typename T> template <typename U>
+Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<U> &src)
 {
 	this->std::array<T, 2>::operator=(src);
 	return *this;
@@ -60,8 +64,8 @@ Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<T> &src)
 
 // Delegation constructor is possible from VS2013, so we can't use it here.
 template <typename T>
-//Cartesian2D<T>::Cartesian2D(T x, T y) : Cartesian2D<T>()
-Cartesian2D<T>::Cartesian2D(T x, T y) : x(at(0)), y(at(1))
+//Cartesian2D<T>::Cartesian2D(T x, T y) : Cartesian2D<T>()	// for VS2013
+Cartesian2D<T>::Cartesian2D(T x, T y) : x(at(0)), y(at(1))	// for VS2012
 {
 	this->x = x;
 	this->y = y;

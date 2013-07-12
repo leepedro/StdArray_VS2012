@@ -4,7 +4,7 @@
 
 
 template <typename T>
-void test(void)
+void test1(void)
 {
 	std::array<T, 2> a1;
 	std::array<T, 2> a2 = {0, 0};
@@ -30,11 +30,25 @@ void test(void)
 	//c1 = c2 + c3;
 }
 
+void test_type_convert(void)
+{
+	double f1;
+	int i1(2);
+	f1 = i1;
+	Cartesian2D<double> c_f1(1, 2);
+	Cartesian2D<double> c_f2;
+	Cartesian2D<int> c_i_1(2, 1);
+	
+	// Next line won't compile because there is no Cartesian2D<T> to std::array<> conversion.
+	//c_f2 = c_i_1;
+}
+
 int main(void)
 {
 	try
 	{
-		test<unsigned char>();		
+		test1<unsigned char>();
+		test_type_convert();
 	}
 	catch (const std::exception &e)
 	{
