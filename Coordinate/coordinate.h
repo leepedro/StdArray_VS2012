@@ -60,6 +60,7 @@ Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<T> &src)
 
 // Delegation constructor is possible from VS2013, so we can't use it here.
 template <typename T>
+//Cartesian2D<T>::Cartesian2D(T x, T y) : Cartesian2D<T>()
 Cartesian2D<T>::Cartesian2D(T x, T y) : x(at(0)), y(at(1))
 {
 	this->x = x;
