@@ -1,6 +1,7 @@
 #include <array>
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 // Enables copy operation only if it is implicitly allowed.
 // 1) integer -> floating && src < dst
@@ -70,12 +71,47 @@ void test_type_conversion(void)
 	//Copy(ul1, l1);	// error C2893 "failed to specialize function template" GOOD!
 }
 
+template <typename T, typename U, ::size_t N>
+typename std::enable_if<
+	std::is_floating_point<T>::value, void>::type
+round_to(const std::array<T, N> &src, std::array<U, N> &dst)
+{
+	auto it_src = src.cbegin();
+	auto it_dst_end = dst.end();	
+	for (auto it_dst = dst.begin(); it_dst != it_dst_end; ++it_src, ++it_dst)
+		//*it_dst = static_cast<U>(std::round(*it_src));
+		if (*it_src >= 0)
+			*it_dst = static_cast<U>(std::floor(*it_src + 0.5));
+		else
+			*it_dst = static_cast<U>(std::ceil(*it_src - 0.5));
+}
+
+void test_round_to(void)
+{
+	std::array<float, 3> f1 = {2.1f, 2.5f, 2.6f};
+	std::array<float, 3> f2 = {-2.1f, -2.5f, -2.6f};
+	std::array<double, 3> d1 = {2.1, 2.5, 2.6};
+	std::array<double, 3> d2 = {-2.1, -2.5, -2.6};
+	std::array<int, 3> i1 = {};
+	std::array<unsigned int, 3> ui1 = {};
+	round_to(f1, i1);
+	std::array<int, 3> i2 = i1;
+	round_to(f1, ui1);
+	std::array<unsigned int, 3> ui2 = ui1;
+	round_to(f2, i1);
+	//round_to(f2, ui1);	// How do we prevent overflow?
+	round_to(d1, i1);
+	round_to(d1, ui1);
+	round_to(d2, i1);
+	//round_to(d2, ui1);	// How do we prevent overflow?
+}
 
 int main(void)
 {
 	try
 	{
 		test_type_conversion();
+		test_round_to();
 	}
 	catch (const std::exception &ex)
 	{
