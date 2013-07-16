@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include "safe_cast.h"
+
 // Enables copy operation only if it is implicitly allowed.
 // 1) integer -> floating && src < dst
 // 2) floating -> floating && src <= dst
@@ -81,9 +83,11 @@ round_to(const std::array<T, N> &src, std::array<U, N> &dst)
 	for (auto it_dst = dst.begin(); it_dst != it_dst_end; ++it_src, ++it_dst)
 		//*it_dst = static_cast<U>(std::round(*it_src));
 		if (*it_src >= 0)
-			*it_dst = static_cast<U>(std::floor(*it_src + 0.5));
+			SafeCast(std::floor(*it_src + 0.5), *it_dst);
+			//*it_dst = static_cast<U>(std::floor(*it_src + 0.5));
 		else
-			*it_dst = static_cast<U>(std::ceil(*it_src - 0.5));
+			SafeCast(std::ceil(*it_src - 0.5), *it_dst);
+			//*it_dst = static_cast<U>(std::ceil(*it_src - 0.5));
 }
 
 void test_round_to(void)
@@ -99,11 +103,11 @@ void test_round_to(void)
 	round_to(f1, ui1);
 	std::array<unsigned int, 3> ui2 = ui1;
 	round_to(f2, i1);
-	//round_to(f2, ui1);	// How do we prevent overflow?
+	//round_to(f2, ui1);	// Overflow detected.
 	round_to(d1, i1);
 	round_to(d1, ui1);
 	round_to(d2, i1);
-	//round_to(d2, ui1);	// How do we prevent overflow?
+	//round_to(d2, ui1);	// Overflow detected.
 }
 
 int main(void)
