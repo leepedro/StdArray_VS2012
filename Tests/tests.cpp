@@ -81,13 +81,14 @@ round_to(const std::array<T, N> &src, std::array<U, N> &dst)
 	auto it_src = src.cbegin();
 	auto it_dst_end = dst.end();	
 	for (auto it_dst = dst.begin(); it_dst != it_dst_end; ++it_src, ++it_dst)
-		//*it_dst = static_cast<U>(std::round(*it_src));
+#if _MSC_VER > 1700		// from VS2013
+		*it_dst = static_cast<U>(std::round(*it_src));
+#else					// up to VS2013
 		if (*it_src >= 0)
 			SafeCast(std::floor(*it_src + 0.5), *it_dst);
-			//*it_dst = static_cast<U>(std::floor(*it_src + 0.5));
 		else
 			SafeCast(std::ceil(*it_src - 0.5), *it_dst);
-			//*it_dst = static_cast<U>(std::ceil(*it_src - 0.5));
+#endif
 }
 
 void test_round_to(void)

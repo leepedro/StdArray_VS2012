@@ -3,28 +3,6 @@
 
 #include <array>
 
-template <typename T, ::size_t N>
-class Cartesian : public std::array<T, N>
-{
-public:
-	//Cartesian(void);
-	//Cartesian(const Cartesian<T, N> &src);
-	//Cartesian<T, N> &operator=(const Cartesian<T, N> &src);
-};
-
-//template <typename T, ::size_t N>
-//Cartesian<T, N>::Cartesian(void) : std::array<T, N>() {}
-//
-//template <typename T, ::size_t N>
-//Cartesian<T, N>::Cartesian(const Cartesian<T, N> &src) : std::array<T, N>(src) {}
-//
-//template <typename T, ::size_t N>
-//Cartesian<T, N> &Cartesian<T, N>::operator=(const Cartesian<T, N> &src)
-//{
-//	this->std::array<T, N>::operator=(src);
-//	return *this;
-//}
-
 /* A template based array classs is derived from std::array<T, N> class.
 DESIGN GOAL:
 An easy to use 2-member array class with overloaded operators such as pt3 = pt1 + pt2.
@@ -64,8 +42,11 @@ Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<U> &src)
 
 // Delegation constructor is possible from VS2013, so we can't use it here.
 template <typename T>
-//Cartesian2D<T>::Cartesian2D(T x, T y) : Cartesian2D<T>()	// for VS2013
-Cartesian2D<T>::Cartesian2D(T x, T y) : x(at(0)), y(at(1))	// for VS2012
+#if _MSC_VER > 1700	// from VS2013
+Cartesian2D<T>::Cartesian2D(T x, T y) : Cartesian2D<T>()
+#else				// up to VS2012
+Cartesian2D<T>::Cartesian2D(T x, T y) : x(at(0)), y(at(1))
+#endif
 {
 	this->x = x;
 	this->y = y;
