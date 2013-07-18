@@ -111,12 +111,30 @@ void test_round_to(void)
 	//round_to(d2, ui1);	// Overflow detected.
 }
 
+void test_operators(void)
+{
+	std::array<int, 3> i1 = {1, 2, 3}, i2 = {1, 0, 3}, i3;
+	i3 = i1;
+	if (i1 == i3)
+		std::cout << "i1 == i3 is true" << std::endl;
+	else
+		std::cout << "i1 == i3 is not true" << std::endl;
+	if (i1 != i2)
+		std::cout << "i1 != i2 is true" << std::endl;
+	else
+		std::cout << "i1 != i2 is not true" << std::endl;
+	//i3 = i1 + i2;		// undefined.
+	std::array<long long, 3> l1;
+
+}
+
 int main(void)
 {
 	try
 	{
 		test_type_conversion();
 		test_round_to();
+		test_operators();
 	}
 	catch (const std::exception &ex)
 	{
