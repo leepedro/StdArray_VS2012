@@ -27,11 +27,11 @@ public:
 
 
 template <typename T>
-Cartesian2D<T>::Cartesian2D(void) : x(at(0)), y(at(1)) {}
+Cartesian2D<T>::Cartesian2D(void) : x(this->at(0)), y(this->at(1)) {}
 
 template <typename T> template <typename U>
 Cartesian2D<T>::Cartesian2D(const Cartesian2D<U> &src) :
-	std::array<T, 2>(src), x(at(0)), y(at(1)) {}
+	std::array<T, 2>(src), x(this->at(0)), y(this->at(1)) {}
 
 template <typename T> template <typename U>
 Cartesian2D<T> &Cartesian2D<T>::operator=(const Cartesian2D<U> &src)
@@ -45,7 +45,7 @@ template <typename T>
 #if _MSC_VER > 1700	// from VS2013
 Cartesian2D<T>::Cartesian2D(T x, T y) : Cartesian2D<T>()
 #else				// up to VS2012
-Cartesian2D<T>::Cartesian2D(T x, T y) : x(at(0)), y(at(1))
+Cartesian2D<T>::Cartesian2D(T x, T y) : x(this->at(0)), y(this->at(1))
 #endif
 {
 	this->x = x;
